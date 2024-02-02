@@ -1,8 +1,8 @@
 export interface NoteInterface {
-  owner_id: number;
+  owner_id: string;
   title: string;
   description: string;
   priority: number;
   favorite: boolean;
-  category: [number];
+  category_id: string;
 }

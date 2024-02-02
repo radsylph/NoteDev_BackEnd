@@ -1,8 +1,28 @@
-import Express from "express"; // se declara la instacia de express
-import { test } from "../controllers/notes.controllers"; // se importan los controladores
+import Express from "express";
+import {
+  test,
+  createNote,
+  editNote,
+  deleteNote,
+} from "../controllers/notes.controllers";
+import passport from "passport";
+const router = Express.Router();
 
-const router = Express.Router(); // se declara el router para las rutas y peticiones
+router.get("/test", test);
+router.post(
+  "/create",
+  passport.authenticate("jwt", { session: false }),
+  createNote
+);
+router.put(
+  "/edit/:note_id",
+  passport.authenticate("jwt", { session: false }),
+  editNote
+);
+router.delete(
+  "/delete/:note_id",
+  passport.authenticate("jwt", { session: false }),
+  deleteNote
+);
 
-router.get("/test", test); // se declara la primera peticion de prueba
-
-export default router; // se esporta el router para que pueda ser usado en otros archivos
+export default router;
