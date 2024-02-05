@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.EditUser = exports.test = exports.loginUser = exports.createUser = void 0;
+exports.deleteUser = exports.EditUser = exports.test2 = exports.test = exports.loginUser = exports.createUser = void 0;
 const passport_1 = __importDefault(require("../configs/passport"));
 const user_1 = __importDefault(require("../models/user"));
 const jwt_1 = require("../utils/jwt");
@@ -135,3 +135,7 @@ const test = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.test = test;
+const test2 = (req, res) => {
+    return res.json({ message: "testing" });
+};
+exports.test2 = test2;

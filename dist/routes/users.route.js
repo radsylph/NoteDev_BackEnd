@@ -12,4 +12,5 @@ router.post("/login", users_controllers_1.loginUser);
 router.get("/test", passport_1.default.authenticate("jwt", { session: false }), users_controllers_1.test);
 router.put("/edit", passport_1.default.authenticate("jwt", { session: false }), users_controllers_1.EditUser);
 router.delete("/delete", passport_1.default.authenticate("jwt", { session: false }), users_controllers_1.deleteUser);
+router.get("/test2", users_controllers_1.test2);
 exports.default = router;

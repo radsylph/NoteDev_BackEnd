@@ -11,4 +11,5 @@ router.get("/test", notes_controllers_1.test);
 router.post("/create", passport_1.default.authenticate("jwt", { session: false }), notes_controllers_1.createNote);
 router.put("/edit/:note_id", passport_1.default.authenticate("jwt", { session: false }), notes_controllers_1.editNote);
 router.delete("/delete/:note_id", passport_1.default.authenticate("jwt", { session: false }), notes_controllers_1.deleteNote);
+router.post("/category", passport_1.default.authenticate("jwt", { session: false }), notes_controllers_1.createCategory);
 exports.default = router;

@@ -12,8 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteNote = exports.editNote = exports.createNote = exports.test = void 0;
+exports.createCategory = exports.deleteNote = exports.editNote = exports.createNote = exports.test = void 0;
 const note_1 = __importDefault(require("../models/note"));
+const category_1 = __importDefault(require("../models/category"));
 const jwt_1 = require("../utils/jwt");
 const user_1 = __importDefault(require("../models/user"));
 const test = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -94,3 +95,26 @@ const deleteNote = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteNote = deleteNote;
+const createCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _d;
+    const { name } = req.body;
+    const token = (_d = req.headers.authorization) === null || _d === void 0 ? void 0 : _d.split(" ")[1];
+    const payload = (0, jwt_1.decryptToken)(token);
+    try {
+        const searchUser = yield user_1.default.findById(payload.user._id);
+        if (!searchUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        const newCategory = yield category_1.default.create({
+            owner_id: payload.user._id,
+            name,
+        });
+        return res
+            .status(200)
+            .json({ message: "Category created", category: newCategory });
+    }
+    catch (error) {
+        return res.status(500).json({ message: "Internal server error", error });
+    }
+});
+exports.createCategory = createCategory;

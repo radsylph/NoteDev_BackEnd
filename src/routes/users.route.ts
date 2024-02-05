@@ -5,6 +5,7 @@ import {
   test,
   EditUser,
   deleteUser,
+  test2,
 } from "../controllers/users.controllers";
 import passport from "passport";
 
@@ -19,5 +20,5 @@ router.delete(
   passport.authenticate("jwt", { session: false }),
   deleteUser
 );
-
+router.get("/test2", test2);
 export default router;

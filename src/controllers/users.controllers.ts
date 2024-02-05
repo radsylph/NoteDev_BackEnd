@@ -4,7 +4,6 @@ import User from "../models/user";
 import AuthRequest from "../interfaces/authRequest.interface";
 import { generateToken, decryptToken } from "../utils/jwt";
 
-
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
   await passport.authenticate("signup", (err: any, user: any, info: any) => {
     if (err) {
@@ -120,4 +119,8 @@ const test = async (req: AuthRequest, res: Response) => {
     return res.status(404).json({ message: "User not found", error: error });
   }
 };
-export { createUser, loginUser, test, EditUser, deleteUser };
+
+const test2 = (req: Request, res: Response) => {
+  return res.json({ message: "testing" });
+};
+export { createUser, loginUser, test, test2, EditUser, deleteUser };
