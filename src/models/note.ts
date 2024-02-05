@@ -1,7 +1,8 @@
-import moongose from "mongoose";
+import mongoose from "mongoose";
 import { NoteInterface } from "../interfaces/note.interface";
+import Category from "./category";
 
-const NoteSchema = new moongose.Schema<NoteInterface>({
+const NoteSchema = new mongoose.Schema<NoteInterface>({
   owner_id: {
     type: String,
     required: true,
@@ -17,19 +18,21 @@ const NoteSchema = new moongose.Schema<NoteInterface>({
   priority: {
     type: Number,
     required: true,
+    default: 5,
   },
   favorite: {
     type: Boolean,
-    required: true,
+    required: false,
     default: false,
   },
   category_id: {
     type: String,
     required: false,
     default: null,
+    ref: "Category",
   },
 });
 
-const Note = moongose.model<NoteInterface>("Note", NoteSchema);
+const Note = mongoose.model<NoteInterface>("Note", NoteSchema);
 
 export default Note;
