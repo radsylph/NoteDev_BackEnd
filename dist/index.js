@@ -22,7 +22,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config({ path: ".env" });
 const secret = process.env.SECRET;
 const server = (0, express_1.default)(); // se crea la instacia de express
-const port = 3000; // se declara el puerto por ahora
+const port = process.env.PORT; // se declara el puerto por ahora
 server.use((0, cors_1.default)()); // se usa cors
 server.use(express_1.default.json()); // se usa el middleware para que express pueda entender json
 server.use(express_1.default.urlencoded({ extended: true })); // se usa el middleware para que express pueda entender los datos de un formulario
@@ -41,4 +41,4 @@ try {
 catch (error) {
     console.log(error);
 }
-server.listen(port || 3000, "0.0.0.0", () => console.log(`Server is running on port ${port}`)); // se levanta el servidor
+server.listen(port, "0.0.0.0", () => console.log(`Server is running on port ${port}`)); // se levanta el servidor

@@ -12,7 +12,7 @@ dotenv.config({ path: ".env" });
 const secret: string = process.env.SECRET;
 
 const server = express(); // se crea la instacia de express
-const port = 3000; // se declara el puerto por ahora
+const port: any = process.env.PORT; // se declara el puerto por ahora
 
 server.use(cors()); // se usa cors
 server.use(express.json()); // se usa el middleware para que express pueda entender json
@@ -39,6 +39,6 @@ try {
   console.log(error);
 }
 
-server.listen(port || 3000, "0.0.0.0", () =>
+server.listen(port, "0.0.0.0", () =>
   console.log(`Server is running on port ${port}`)
 ); // se levanta el servidor
