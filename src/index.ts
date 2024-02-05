@@ -3,7 +3,7 @@ import cors from "cors"; // se importa cors para que no haya problemas de comuni
 import noteRoutes from "./routes/notes.route";
 import userRoutes from "./routes/users.route";
 import database from "./configs/mongo";
-import session from "express-session";
+
 import passport from "passport";
 import dotenv from "dotenv";
 
@@ -17,7 +17,6 @@ const port = 3000; // se declara el puerto por ahora
 server.use(cors()); // se usa cors
 server.use(express.json()); // se usa el middleware para que express pueda entender json
 server.use(express.urlencoded({ extended: true })); // se usa el middleware para que express pueda entender los datos de un formulario
-server.use(session({ secret: secret, resave: true, saveUninitialized: true })); // se usa el middleware para que express pueda usar sesiones
 server.use(passport.initialize()); // se inicializa passport
 server.use(passport.session()); // se usa el middleware para que express pueda usar sesiones de passport
 
