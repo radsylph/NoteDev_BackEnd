@@ -21,11 +21,7 @@ server.use(passport.initialize()); // se inicializa passport
 server.use(passport.session()); // se usa el middleware para que express pueda usar sesiones de passport
 
 server.use("/notes", noteRoutes); // se declaran las rutas para las notas
-server.use(
-  "/users",
-
-  userRoutes
-); // se declaran las rutas para los usuarios
+server.use("/users", userRoutes); // se declaran las rutas para los usuarios
 
 try {
   database.on("error", (err) => {
@@ -39,6 +35,6 @@ try {
   console.log(error);
 }
 
-server.listen(port, "0.0.0.0", () =>
+server.listen(port || 3000, () =>
   console.log(`Server is running on port ${port}`)
 ); // se levanta el servidor

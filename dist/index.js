@@ -41,4 +41,4 @@ try {
 catch (error) {
     console.log(error);
 }
-server.listen(port, "0.0.0.0", () => console.log(`Server is running on port ${port}`)); // se levanta el servidor
+server.listen(port || 3000, () => console.log(`Server is running on port ${port}`)); // se levanta el servidor
