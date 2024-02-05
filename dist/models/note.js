@@ -20,16 +20,18 @@ const NoteSchema = new mongoose_1.default.Schema({
     priority: {
         type: Number,
         required: true,
+        default: 5,
     },
     favorite: {
         type: Boolean,
-        required: true,
+        required: false,
         default: false,
     },
     category_id: {
         type: String,
         required: false,
         default: null,
+        ref: "Category",
     },
 });
 const Note = mongoose_1.default.model("Note", NoteSchema);

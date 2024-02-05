@@ -5,6 +5,8 @@ import {
   editNote,
   deleteNote,
   createCategory,
+  getNotes,
+  getCategories,
 } from "../controllers/notes.controllers";
 import passport from "passport";
 const router = Express.Router();
@@ -30,5 +32,13 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   createCategory
 );
+router
+  .get("/getNotes", passport.authenticate("jwt", { session: false }), getNotes)
+  .get(
+    "/getCategories",
+    passport.authenticate("jwt", { session: false }),
+    getCategories
+  );
+
 
 export default router;

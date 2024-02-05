@@ -97,4 +97,36 @@ const createCategory = async (req: Request, res: Response) => {
   }
 };
 
-export { test, createNote, editNote, deleteNote, createCategory };
+const getNotes = async (req: Request, res: Response) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  const payload: any = decryptToken(token);
+  try {
+    const notes = await Note.find({ owner_id: payload.user._id })
+      .populate("category_id")
+      .exec();
+    return res.status(200).json({ notes });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error", error });
+  }
+};
+
+const getCategories = async (req: Request, res: Response) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  const payload: any = decryptToken(token);
+  try {
+    const categories = await Category.find({ owner_id: payload.user._id });
+    return res.status(200).json({ categories });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error", error });
+  }
+};
+
+export {
+  test,
+  createNote,
+  editNote,
+  deleteNote,
+  createCategory,
+  getNotes,
+  getCategories,
+};

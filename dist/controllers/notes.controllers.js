@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCategory = exports.deleteNote = exports.editNote = exports.createNote = exports.test = void 0;
+exports.getCategories = exports.getNotes = exports.createCategory = exports.deleteNote = exports.editNote = exports.createNote = exports.test = void 0;
 const note_1 = __importDefault(require("../models/note"));
 const category_1 = __importDefault(require("../models/category"));
 const jwt_1 = require("../utils/jwt");
@@ -118,3 +118,31 @@ const createCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.createCategory = createCategory;
+const getNotes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _e;
+    const token = (_e = req.headers.authorization) === null || _e === void 0 ? void 0 : _e.split(" ")[1];
+    const payload = (0, jwt_1.decryptToken)(token);
+    try {
+        const notes = yield note_1.default.find({ owner_id: payload.user._id })
+            .populate("category_id")
+            .exec();
+        return res.status(200).json({ notes });
+    }
+    catch (error) {
+        return res.status(500).json({ message: "Internal server error", error });
+    }
+});
+exports.getNotes = getNotes;
+const getCategories = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _f;
+    const token = (_f = req.headers.authorization) === null || _f === void 0 ? void 0 : _f.split(" ")[1];
+    const payload = (0, jwt_1.decryptToken)(token);
+    try {
+        const categories = yield category_1.default.find({ owner_id: payload.user._id });
+        return res.status(200).json({ categories });
+    }
+    catch (error) {
+        return res.status(500).json({ message: "Internal server error", error });
+    }
+});
+exports.getCategories = getCategories;
