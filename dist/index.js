@@ -17,6 +17,7 @@ const cors_1 = __importDefault(require("cors")); // se importa cors para que no 
 const notes_route_1 = __importDefault(require("./routes/notes.route"));
 const users_route_1 = __importDefault(require("./routes/users.route"));
 const mongo_1 = __importDefault(require("./configs/mongo"));
+const express_session_1 = __importDefault(require("express-session"));
 const passport_1 = __importDefault(require("passport"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config({ path: ".env" });
@@ -26,6 +27,7 @@ const port = process.env.PORT; // se declara el puerto por ahora
 server.use((0, cors_1.default)()); // se usa cors
 server.use(express_1.default.json()); // se usa el middleware para que express pueda entender json
 server.use(express_1.default.urlencoded({ extended: true })); // se usa el middleware para que express pueda entender los datos de un formulario
+server.use((0, express_session_1.default)({ secret: secret, resave: true, saveUninitialized: true })); // se usa el middleware para que express pueda usar sesiones
 server.use(passport_1.default.initialize()); // se inicializa passport
 server.use(passport_1.default.session()); // se usa el middleware para que express pueda usar sesiones de passport
 server.use("/notes", notes_route_1.default); // se declaran las rutas para las notas
@@ -41,4 +43,4 @@ try {
 catch (error) {
     console.log(error);
 }
-server.listen(port || 3000, () => console.log(`Server is running on port ${port}`)); // se levanta el servidor
+server.listen(port, () => console.log(`Server is running on port ${port}`)); // se levanta el servidor
