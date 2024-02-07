@@ -27,11 +27,10 @@ const NoteSchema = new mongoose_1.default.Schema({
         required: false,
         default: false,
     },
-    category_id: {
-        type: String,
+    category: {
+        type: [String],
         required: false,
         default: null,
-        ref: "Category",
     },
 });
 const Note = mongoose_1.default.model("Note", NoteSchema);

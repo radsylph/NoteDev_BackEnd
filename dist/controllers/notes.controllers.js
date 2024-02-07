@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCategories = exports.getNotes = exports.createCategory = exports.deleteNote = exports.editNote = exports.createNote = exports.test = void 0;
+exports.setFavorite = exports.getCategories = exports.getNotes = exports.createCategory = exports.deleteNote = exports.editNote = exports.createNote = exports.test = void 0;
 const note_1 = __importDefault(require("../models/note"));
 const category_1 = __importDefault(require("../models/category"));
 const jwt_1 = require("../utils/jwt");
@@ -23,7 +23,7 @@ const test = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.test = test;
 const createNote = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { title, description, priority, favorite, category_id } = req.body;
+    const { title, description, priority, favorite, category } = req.body;
     const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
     const payload = (0, jwt_1.decryptToken)(token);
     try {
@@ -37,7 +37,7 @@ const createNote = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             description,
             priority,
             favorite,
-            category_id,
+            category,
         });
         return res.status(200).json({ message: "Note created", note: newNote });
     }
@@ -123,9 +123,7 @@ const getNotes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = (_e = req.headers.authorization) === null || _e === void 0 ? void 0 : _e.split(" ")[1];
     const payload = (0, jwt_1.decryptToken)(token);
     try {
-        const notes = yield note_1.default.find({ owner_id: payload.user._id })
-            .populate("category_id")
-            .exec();
+        const notes = yield note_1.default.find({ owner_id: payload.user._id }).exec();
         return res.status(200).json({ notes });
     }
     catch (error) {
@@ -146,3 +144,24 @@ const getCategories = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.getCategories = getCategories;
+const setFavorite = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _g;
+    const { note_id } = req.params;
+    const token = (_g = req.headers.authorization) === null || _g === void 0 ? void 0 : _g.split(" ")[1];
+    const payload = (0, jwt_1.decryptToken)(token);
+    try {
+        const note = yield note_1.default.findById(note_id);
+        if (!note) {
+            return res.status(404).json({ message: "Note not found" });
+        }
+        if (note.owner_id !== payload.user._id) {
+            return res.status(401).json({ message: "You can't edit this note" });
+        }
+        yield note_1.default.findByIdAndUpdate(note_id, { favorite: !note.favorite });
+        return res.status(200).json({ message: "Note updated", note });
+    }
+    catch (error) {
+        return res.status(500).json({ message: "Internal server error", error });
+    }
+});
+exports.setFavorite = setFavorite;

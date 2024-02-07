@@ -15,4 +15,5 @@ router.post("/category", passport_1.default.authenticate("jwt", { session: false
 router
     .get("/getNotes", passport_1.default.authenticate("jwt", { session: false }), notes_controllers_1.getNotes)
     .get("/getCategories", passport_1.default.authenticate("jwt", { session: false }), notes_controllers_1.getCategories);
+router.patch("/favorite/:note_id", passport_1.default.authenticate("jwt", { session: false }), notes_controllers_1.setFavorite);
 exports.default = router;

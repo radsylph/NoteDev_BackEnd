@@ -7,6 +7,7 @@ import {
   createCategory,
   getNotes,
   getCategories,
+  setFavorite,
 } from "../controllers/notes.controllers";
 import passport from "passport";
 const router = Express.Router();
@@ -39,6 +40,10 @@ router
     passport.authenticate("jwt", { session: false }),
     getCategories
   );
-
+router.patch(
+  "/favorite/:note_id",
+  passport.authenticate("jwt", { session: false }),
+  setFavorite
+);
 
 export default router;
