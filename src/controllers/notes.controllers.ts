@@ -9,7 +9,7 @@ const test = async (req: Request, res: Response) => {
 };
 
 const createNote = async (req: Request, res: Response) => {
-  const { title, description, priority, favorite, category_id } = req.body;
+  const { title, description, priority, favorite, category } = req.body;
   const token = req.headers.authorization?.split(" ")[1];
   const payload: any = decryptToken(token);
   try {
@@ -23,7 +23,7 @@ const createNote = async (req: Request, res: Response) => {
       description,
       priority,
       favorite,
-      category_id,
+      category,
     });
     return res.status(200).json({ message: "Note created", note: newNote });
   } catch (error) {
@@ -101,9 +101,7 @@ const getNotes = async (req: Request, res: Response) => {
   const token = req.headers.authorization?.split(" ")[1];
   const payload: any = decryptToken(token);
   try {
-    const notes = await Note.find({ owner_id: payload.user._id })
-      .populate("category_id")
-      .exec();
+    const notes = await Note.find({ owner_id: payload.user._id }).exec();
     return res.status(200).json({ notes });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error", error });
@@ -121,6 +119,25 @@ const getCategories = async (req: Request, res: Response) => {
   }
 };
 
+const setFavorite = async (req: Request, res: Response) => {
+  const { note_id } = req.params;
+  const token = req.headers.authorization?.split(" ")[1];
+  const payload: any = decryptToken(token);
+  try {
+    const note = await Note.findById(note_id);
+    if (!note) {
+      return res.status(404).json({ message: "Note not found" });
+    }
+    if (note.owner_id !== payload.user._id) {
+      return res.status(401).json({ message: "You can't edit this note" });
+    }
+    await Note.findByIdAndUpdate(note_id, { favorite: !note.favorite });
+    return res.status(200).json({ message: "Note updated", note });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error", error });
+  }
+};
+
 export {
   test,
   createNote,
@@ -129,4 +146,5 @@ export {
   createCategory,
   getNotes,
   getCategories,
+  setFavorite,
 };
