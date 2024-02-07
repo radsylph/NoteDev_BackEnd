@@ -4,5 +4,5 @@ export interface NoteInterface {
   description: string;
   priority: number;
   favorite: boolean;
-  category_id: string;
+  category: [string];
 }
