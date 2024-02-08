@@ -123,4 +123,20 @@ const test = async (req: AuthRequest, res: Response) => {
 const test2 = (req: Request, res: Response) => {
   return res.json({ message: "testing" });
 };
-export { createUser, loginUser, test, test2, EditUser, deleteUser };
+
+const getUser = async (req: AuthRequest, res: Response) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  const payload: any = decryptToken(token);
+  try {
+    const user = await User.findById(payload.user._id).exec();
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.json({ message: "User found", user });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Internal server error", error: error });
+  }
+};
+export { createUser, loginUser, test, test2, EditUser, deleteUser, getUser };
